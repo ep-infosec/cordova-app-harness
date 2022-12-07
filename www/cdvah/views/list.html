@@ -1,0 +1,45 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<div class="listen">
+    Listening. IP = <strong>{{ipAddress}}</strong>
+</div>
+<div class="topcoat-list__container">
+    <h3 class="topcoat-list__header">Installed Apps</h3>
+    <ul class="topcoat-list">
+        <li class="topcoat-list__item" ng-repeat="app in appList">
+            <div>{{app.getAppName() || app.getConfigXmlId() || app.appId}}</div>
+            <div ng-show="app.updatingStatus === null">Last updated: <span am-time-ago="app.lastUpdated"></span></div>
+            <div ng-show="app.updatingStatus !== null">Update in progress: {{app.updatingStatus}}%</div>
+            <div ng-show="app.plugins.missing.length + app.plugins.newer.length + app.plugins.older.length > 0">
+                Plugins:
+                <span>{{app.plugins.all.length}} total</span><span ng-show="app.plugins.missing.length || app.plugins.older.length || app.plugins.newer.length">, </span>
+                <span style="color:#c00" ng-show="app.plugins.missing.length">{{ app.plugins.missing.length }} missing</span><span ng-show="app.plugins.missing.length && (app.plugins.older.length || app.plugins.newer.length)">, </span>
+                <span style="color:#822" ng-show="app.plugins.older.length">{{ app.plugins.older.length }} outdated</span><span ng-show="app.plugins.older.length && app.plugins.newer.length">, </span>
+                <span ng-show="app.plugins.newer.length">{{ app.plugins.newer.length }} newer</span>
+            </div>
+            <div ng-show="app.plugins.missing.length + app.plugins.newer.length + app.plugins.older.length == 0">Plugins: OK</div>
+            <button ng-click="launchApp(app, $event)">Launch</button>
+            <button ng-click="removeApp(app, $event)">Remove</button>
+            <button ng-click="showDetails($index)">Details</button>
+        </li>
+    </ul>
+  </div>
+</div>
+
+
